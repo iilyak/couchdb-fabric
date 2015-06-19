@@ -42,15 +42,7 @@ validate_dbname(DbName, Options) ->
     false ->
         ok;
     true ->
-        case re:run(DbName, ?DBNAME_REGEX, [{capture,none}, dollar_endonly]) of
-        match ->
-            ok;
-        nomatch ->
-            case lists:member(?b2l(DbName), ?SYSTEM_DATABASES) of
-            true -> ok;
-            false -> {error, illegal_database_name}
-            end
-        end
+        couch_db:validate_dbname(DbName)
     end.
 
 generate_shard_map(DbName, Options) ->
